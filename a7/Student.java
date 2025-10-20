@@ -1,4 +1,3 @@
-import java.lang.reflect.*;
 import java.util.ArrayList;
 
 class Student {
@@ -123,39 +122,40 @@ class Student {
     }
 }
 
-class StudentInspector {
-    public static void main(String[] args) {
+// class StudentInspector {
+//     public static void main(String[] args) {
         
-    }
+//     }
 
-    public static void printObjectDetails(Object obj) {
-        Class c = obj.getClass();
-        System.out.println("Class : " + c.getName());
+//     public static void printObjectDetails(Object obj) {
+//         Class c = obj.getClass();
+//         System.out.println("Class : " + c.getName());
         
-        Constructor[] constructors = c.getConstructors();
-        System.out.println("\nConstructors --->");
-        for (Constructor constructor : constructors) {
-            System.out.println("\t" + constructor);
-        }
+//         Constructor[] constructors = c.getConstructors();
+//         System.out.println("\nConstructors --->");
+//         for (Constructor constructor : constructors) {
+//             System.out.println("\t" + constructor);
+//         }
 
-        Field[] fields = c.getDeclaredFields();
-        if (fields.length != 0) {
-            System.out.println("Fields --->");
-            for (Field field : fields) {
-                System.out.println("\t" + field);
-            }
-        }
-        else
-            System.out.println("No Declared Field Exists!");
+//         Field[] fields = c.getDeclaredFields();
+//         if (fields.length != 0) {
+//             System.out.println("Fields --->");
+//             for (Field field : fields) {
+//                 System.out.println("\t" + field);
+//             }
+//         }
+//         else
+//             System.out.println("No Declared Field Exists!");
 
-        Method[] methods = c.getDeclaredMethods();
-        if (methods.length != 0) {
-            System.out.println("\nDeclared Methods --->");
-            for (Method method : methods) {
-                System.out.println("\t" + method);
-            }
-        }
-        else
-            System.out.println("No Declared Methods Exists!");
-    }
-}
+//         Method[] methods = c.getDeclaredMethods();
+//         if (methods.length != 0) {
+//             System.out.println("\nDeclared Methods --->");
+//             for (Method method : methods) {
+//                 System.out.println("\t" + method);
+//             }
+//         }
+//         else
+//             System.out.println("No Declared Methods Exists!");
+//     }
+// }
+
