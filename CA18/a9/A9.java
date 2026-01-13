@@ -89,7 +89,7 @@ public class A9 {
 			log.setLevel(Level.ALL);
 		}
 		catch (Exception e) {
-			System.err.println("Initialization Error Occurred!");
+			System.err.println("Error While Initializing Logger!");
 		}
 		
 	}

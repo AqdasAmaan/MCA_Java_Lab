@@ -82,15 +82,36 @@ class DownloadWorker implements Runnable {
                     total += bytes;
 
                     // Progress Bar
-                    int percent = (int) ((total * 100) / fileSize);
-                    int filledLength = (percent * barLength) / 100;
-                    StringBuilder bar = new StringBuilder();
-                    bar.append("[");
-                    for (int i = 0; i < barLength; i++)
-                        bar.append(i < filledLength ? "=" : " "); 
-                    bar.append("] ");
-                    System.out.print("\r" + bar + percent + "%");
-                    System.out.flush();
+                    // int percent = (int) ((total * 100) / fileSize);
+                    // int filledLength = (percent * barLength) / 100;
+                    // StringBuilder bar = new StringBuilder();
+                    // bar.append("[");
+                    // for (int i = 0; i < barLength; i++)
+                    //     bar.append(i < filledLength ? "=" : " "); 
+                    // bar.append("] ");
+                    // System.out.print("\r" + bar + percent + "%");
+                    // System.out.flush();
+
+                    if (fileSize > 0) {
+                        java.math.BigInteger totalBI = java.math.BigInteger.valueOf(total);
+                        java.math.BigInteger sizeBI  = java.math.BigInteger.valueOf(fileSize);
+                        int percent = totalBI.multiply(java.math.BigInteger.valueOf(100))
+                                            .divide(sizeBI)
+                                            .intValue();
+
+                        int filledLength = (percent * barLength) / 100;
+
+                        StringBuilder bar = new StringBuilder("[");
+                        for (int i = 0; i < barLength; i++)
+                            bar.append(i < filledLength ? "=" : " ");
+                        bar.append("] ");
+
+                        System.out.print("\r" + bar + percent + "%");
+                        System.out.flush();
+                    } else {
+                        // When size is unknown
+                        System.out.print("\rDownloaded " + total + " bytes");
+                    }
                 }
             }
 
@@ -152,3 +173,11 @@ public class a11 {
         System.out.println("Downloads started...");
     }
 }
+
+
+// Sample download URLs for testing:
+// https://filesamples.com/samples/video/mp4/sample_1920x1080.mp4
+// https://filesamples.com/samples/video/mp4/sample_640x360.mp4
+// https://filesamples.com/samples/video/mp4/sample_1280x720.mp4
+// https://filesamples.com/samples/video/mp4/sample_960x540.mp4
+// https://filesamples.com/samples/video/mp4/sample_960x400_ocean_with_audio.mp4
