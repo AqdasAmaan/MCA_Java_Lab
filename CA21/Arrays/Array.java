@@ -1,5 +1,7 @@
 class Array {
-    private int a[], length, size;
+
+    private final int a[], length;
+    private int size;
 
     public Array(int n) {
         a = new int[n];
@@ -8,10 +10,7 @@ class Array {
     }
 
     public boolean isEmpty() {
-        if (size == 0)
-            return true;
-        
-        return false;
+        return size == 0;
     }
 
     public int size() {
@@ -70,6 +69,6 @@ class Array {
         for (int i=0; i<size; i++)
             System.out.print(a[i] + ", ");
         
-        System.out.print("\b\b]");
+        System.out.println("\b\b]");
     }
 }
