@@ -2,7 +2,7 @@ import java.util.*;
 
 class Matrix {
     final int[][] a;
-    private final int rows, columns;
+    final int rows, columns;
 
     public Matrix(int dim) {
         rows = columns = dim;
@@ -72,14 +72,6 @@ class Matrix {
 
         return sb.toString();
     }
-
-    public int getRows() {
-        return rows;
-    }
-
-    public int getColumns() {
-        return columns;
-    }
 }
 
 class DiagonalMatrix {
@@ -93,7 +85,7 @@ class DiagonalMatrix {
     public DiagonalMatrix(Matrix m) {
         if (!m.isDiagonalMatrix())
             throw new RuntimeException("Not A Diagonal Matrix! Cannot create an object of DiagonalMatrix for the given matrix: " + m);
-        dim = m.getRows();
+        dim = m.rows;
         a = new int[dim];
 
         for (int i=0; i<dim; i++)
@@ -126,7 +118,7 @@ class DiagonalMatrix {
     }
     
     public Matrix add(Matrix b) {
-        if (dim != b.getRows() || dim != b.getColumns())
+        if (dim != b.rows || dim != b.columns)
             throw new RuntimeException("Dimensions are not equal! Cannot perform addition.");
         
         Matrix sum = new Matrix(dim);
@@ -150,7 +142,7 @@ class DiagonalMatrix {
     }
 
     public Matrix subtract(Matrix b) {
-        if (dim != b.getRows() || dim != b.getColumns())
+        if (dim != b.rows || dim != b.columns)
             throw new RuntimeException("Dimensions are not equal! Cannot perform subtraction.");
         
         Matrix diff = new Matrix(dim);
@@ -174,15 +166,27 @@ class DiagonalMatrix {
     }
     
     public Matrix multiply(Matrix b) {
-        if (dim != b.getRows())
+        if (dim != b.rows)
             throw new RuntimeException("Dimensions incompatible for multiplication!");
 
-        Matrix prod = new Matrix(dim, b.getColumns());
+        Matrix prod = new Matrix(dim, b.columns);
 
-        for (int i=0; i<dim; i++) 
-            prod.a[i][i] = a[i] * b.a[i][i];
+        for (int i=0; i<dim; i++) {
+            for (int j=0; j<b.columns; j++)
+                prod.a[i][j] = a[i] * b.a[i][j];
+        }
         
         return prod;
+    }
+
+    public int determinant() {
+        int d = 1;
+
+        for (int i=0; i<dim; i++) {
+            d *= a[i];
+        }
+
+        return d;
     }
 }
 
@@ -199,7 +203,122 @@ class UTM {
         }
     }
 
+    public void read() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the elements of the Upper Triangular Matrix -->");
+        for (int i=0; i<n; i++) {
+            for (int j=0; j<n-i; j++) {
+                System.out.println("[" + i + "," + (j+i) + "]");
+                a[i][j] = sc.nextFloat();
+            }
+        }
+    }
+
     public UTM add(UTM B) {
-        
+        if (n != B.n)
+            throw new RuntimeException("Dimensions are not same! Cannot perform addition.");
+
+        UTM C = new UTM(n);
+
+        for (int i=0; i<n; i++) {
+            for (int j=0; j<n-i; j++) {
+                C.a[i][j] = a[i][j] + B.a[i][j];
+            }
+        }
+
+        return C;
+    }
+
+    public UTM multiply(UTM B) {
+        if (n != B.n)
+            throw new RuntimeException("Dimensions are not same! Cannot perform multiplications.");
+
+        UTM C = new UTM(n);
+
+        return C;
+    }
+
+    public float determinant() {
+        return 0;
+    }
+}
+
+class LTM {
+    final float[][] a;
+    final int n;
+
+    public LTM(int n) {
+        this.n = n;
+        a = new float[n][];
+
+        for (int i=1; i<=n; i++) {
+            a[i] = new float[i];
+        }
+    }
+
+    public void read() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the elements of the Lower Triangular Matrix -->");
+        for (int i=0; i<n; i++) {
+            for (int j=0; j<=i; j++) {
+                System.out.println("[" + i + "," + j + "]");
+                a[i][j] = sc.nextFloat();
+            }
+        }
+    }
+
+    public LTM add(LTM B) {
+        if (n != B.n)
+            throw new RuntimeException("Dimensions are not same! Cannot perform addition.");
+
+        LTM C = new LTM(n);
+
+        for (int i=0; i<n; i++) {
+            for (int j=0; j<=i; j++) {
+                C.a[i][j] = a[i][j] + B.a[i][j];
+            }
+        }
+        return C;
+    }
+}
+
+class TriDiagonalMatrix {
+    final float[][] a;
+    final int n;
+
+    public TriDiagonalMatrix(int n) {
+        this.n = n;
+        a = new float[n][];
+
+        for (int i=0; i<n; i++) {
+            if (i == 0 || i == n-1)
+                a[i] = new float[2];
+            else
+                a[i] = new float[3];
+        }
+    }
+
+    public void read() {
+        Scanner sc = new Scanner(System.in);
+        for (int i=0; i<n; i++) {            
+            for (int j = Math.max(i-1, 0); j <= Math.min(i+1, n-1); j++) {
+                System.out.print("Enter element [" + i + "," + j + "]: ");
+                a[i][j-i+1] = sc.nextFloat();
+            }   
+        }
+    }
+
+    public void display() {
+        for (int i=0; i<n; i++) {
+
+            for (int j=0; j<n; j++) {
+                if (Math.abs(i-j) >= 2)
+                    System.out.print(0 + "\t");
+                else
+                    System.out.print(a[i][j-i+1] + "\t");
+            }
+
+            System.out.println();
+        }
     }
 }
