@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-class Main {
+class A7 {
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
@@ -10,7 +10,7 @@ class Main {
             System.out.println("\n===== Expression Menu =====");
             System.out.println("1. Convert Infix to Postfix");
             System.out.println("2. Evaluate Postfix");
-            System.out.println("3. Run Tests");
+            // System.out.println("3. Run Tests");
             System.out.println("0 Exit");
             System.out.print("Choose an option: ");
 
@@ -29,7 +29,6 @@ class Main {
 
                         System.out.println("Postfix Expression: " + String.join(" ", postfix));
 
-                        // NEW: Evaluate the converted postfix
                         double result = evalPostfix(postfix);
                         System.out.println("Evaluation Result: " + result);
 
@@ -104,7 +103,7 @@ class Main {
 
     private static ArrayList<String> toPostfix(ArrayList<String> tokens) {
         ArrayList<String> output = new ArrayList<>();
-        Stack<String> ops = new Stack<>();
+        Stack<String> ops = new Stack<>(100);
 
         for (String token : tokens) {
 
@@ -171,7 +170,7 @@ class Main {
     }
 
     private static double evalPostfix(ArrayList<String> postfix) {
-        Stack<Double> stack = new Stack<>();
+        Stack<Double> stack = new Stack<>(100);
 
         for (String token : postfix) {
             if (isNumber(token)) {
