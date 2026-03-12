@@ -3,58 +3,80 @@ import java.util.Arrays;
 
 class Main {
     public static void main(String[] args) {
-        // String[] words = {
-        //     "abide", "guide", "badge", "caged", "faced",
-        //     "gaude", "obige", "afoge", "begad", "debag",
-        //     "dice", "face", "cage", "fade", "aged",
-        //     "bog", "dig", "fig", "big", "fed",
-        //     "gab", "bag", "bed", "ice", "dog",
-        //     "ab", "ac", "ad", "af", "ag",
-        //     "ba", "be", "bi", "bo", "bu",
-        //     "ego", "due", "obeid", "cafed", "gabed",
-        //     "gaud", "foe", "aid", "obe", "fad"
-        // };
 
-        String[] words = {
-            // Same last character 'e'
-            "cage",
-            "bage",
-            "fage",
-            "gage",
+        String[][] tests = {
 
-            // Same last two characters "ge"
-            "abge",
-            "bbge",
-            "cbge",
+            // Basic sorting
+            {"dog", "cat", "bat", "ant"},
 
-            // Same last three characters "age"
-            "bage",
-            "cage",
-            "gage",
+            // Already sorted
+            {"ant", "bat", "cat", "dog"},
 
-            // Different lengths but same suffix
-            "age",
-            "ge",
-            "e",
+            // Reverse sorted
+            {"zoo", "yak", "xenon", "wolf"},
 
-            // Same prefix but different suffix
-            "abide",
-            "abide",
-            "abide",
+            // Different lengths
+            {"a", "abc", "ab", "abcd"},
 
-            // Carefully ordered for stability check
-            "dig",
-            "fig",
-            "big",
-            "gig",
+            // Prefix case
+            {"app", "apple", "ap"},
 
-            // Same exact words in order (must remain in same order)
-            "face",
-            "face",
-            "face"
+            // Duplicates
+            {"dog", "cat", "dog", "bat"},
+
+            // All duplicates
+            {"face", "face", "face"},
+
+            // Stability case
+            {"dig", "fig", "big", "gig"},
+
+            // Same suffix
+            {"cage", "bage", "fage", "gage"},
+
+            // Same last two characters
+            {"abge", "bbge", "cbge"},
+
+            // Empty string case
+            {"", "a", "ab"},
+
+            // Single element
+            {"hello"}
         };
 
-        sort(words);
+
+        String[][] expected = {
+
+            {"ant","bat","cat","dog"},
+            {"ant","bat","cat","dog"},
+            {"wolf","xenon","yak","zoo"},
+            {"a","ab","abc","abcd"},
+            {"ap","app","apple"},
+            {"bat","cat","dog","dog"},
+            {"face","face","face"},
+            {"big","dig","fig","gig"},
+            {"bage","cage","fage","gage"},
+            {"abge","bbge","cbge"},
+            {"","a","ab"},
+            {"hello"}
+        };
+
+
+        for (int i = 0; i < tests.length; i++) {
+
+            String[] input = Arrays.copyOf(tests[i], tests[i].length);
+
+            Main.sort(input);
+
+            boolean pass = Arrays.equals(input, expected[i]);
+
+            System.out.println("\nTest Case " + (i + 1));
+
+            System.out.println("Input:    " + Arrays.toString(tests[i]));
+            System.out.println("Expected: " + Arrays.toString(expected[i]));
+            System.out.println("Actual:   " + Arrays.toString(input));
+
+            System.out.println(pass ? "PASS" : "FAIL");
+        }
     }
 
     public static void sort(String[] words) {
@@ -63,50 +85,34 @@ class Main {
         for (String word : words)
             if (word.length() > max_len) max_len = word.length();
 
-        System.out.println(max_len);
+        LinkedList[] bucket = new LinkedList[27];
 
-        LinkedList[] bucket = new LinkedList[11];
-
-        for (int i=0; i<11; i++)
+        for (int i = 0; i < bucket.length; i++)
             bucket[i] = new LinkedList();
-        
 
-        int pos = 1;
-        while (max_len-- > 0) {
+        for (int pos = max_len - 1; pos >= 0; pos--) {
 
             for (String word : words) {
-                char ch = (word.length() >= pos) ? word.charAt(word.length() - pos) : '\0';
-
-                bucket[index(ch)].insert(word, 0);
+                char ch = (pos < word.length()) ? word.charAt(pos) : '\0';
+                bucket[index(ch)].insert(word, bucket[index(ch)].size);
             }
+
             int j = 0;
 
-            for (int i=0; i<11; i++) {
+            for (int i = 0; i < bucket.length; i++) {
                 while (!bucket[i].isEmpty())
-                    words[j++] = bucket[i].del(bucket[i].size - 1);
+                    words[j++] = bucket[i].del(0);
             }
+        }
 
-            pos++;
-        }     
-
-        System.out.println("Sorted List of Words -->");   
-        System.out.print(Arrays.toString(words));
+        System.out.println("Sorted List of Words -->");
+        System.out.println(Arrays.toString(words));
     }
 
     public static int index (char letter) {
-        return switch(letter) {
-            case '\0' -> 0;
-            case 'a' -> 1;
-            case 'b' -> 2;
-            case 'c' -> 3;
-            case 'd' -> 4;
-            case 'e' -> 5;
-            case 'f' -> 6;
-            case 'g' -> 7;
-            case 'i' -> 8;
-            case 'o' -> 9;
-            case 'u' -> 10;
-            default -> -1;
-        };
+
+        if (letter == '\0')
+            return 0;
+        return letter - 'a' + 1;
     }
 }
