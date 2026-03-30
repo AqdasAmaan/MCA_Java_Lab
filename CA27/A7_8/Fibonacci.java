@@ -56,6 +56,7 @@ class Fibonacci {
         while (!stack.isEmpty()) {
             Frame current = stack.pop();
 
+
             if (current.stage == 0) {
 
                 if (current.n == 1) 
