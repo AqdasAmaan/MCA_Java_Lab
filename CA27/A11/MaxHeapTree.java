@@ -103,20 +103,20 @@ class MaxHeapTree {
         int tempN = n;
 
         for (int i = (tempN - 2) / 2; i >= 0; i--) {
-            adjustTemp(temp, i, tempN);
+            adjust(temp, i, tempN);
         }
 
         for (int i = tempN - 1; i >= 1; i--) {
             int x = temp[i];
             temp[i] = temp[0];
             temp[0] = x;
-            adjustTemp(temp, 0, i);
+            adjust(temp, 0, i);
         }
 
         return temp;
     }
 
-    private void adjustTemp(int[] arr, int i, int size) {
+    private void adjust(int[] arr, int i, int size) {
         int j = 2 * i + 1;
         int x = arr[i];
 

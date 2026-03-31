@@ -8,7 +8,7 @@ class Main {
         PriorityQueueHeap pq = new PriorityQueueHeap(200);
 
         while (true) {
-            System.out.println("\n========== Q11 MENU ==========");
+            System.out.println("\n========== MENU ==========");
             System.out.println("1. Build Heap from list");
             System.out.println("2. Insert into Heap");
             System.out.println("3. Delete Max from Heap");
